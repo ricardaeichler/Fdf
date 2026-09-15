@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <title>🔍 Finde den Fehler - 66 Level E-Commerce Trainings-Game</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+            max-width: 1400px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #004e87 0%, #0476c7 100%);
+            color: white;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            border-bottom: 3px solid #f07e26;
+            flex-wrap: wrap;
+        }
+
+        .header-left {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 13px;
+            opacity: 0.95;
+        }
+
+        .header-logo {
+            height: 50px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-logo img {
+            height: 100%;
+            width: auto;
+        }
+
+        .progress-section {
+            text-align: right;
+            min-width: 120px;
+        }
+
+        .progress-text {
+            font-size: 12px;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #f07e26;
+            transition: width 0.3s ease;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 24px;
+            padding: 32px;
+            min-height: 600px;
+        }
+
+        @media (max-width: 900px) {
+            .content { grid-template-columns: 1fr; gap: 16px; padding: 20px; }
+            .header { flex-direction: column; text-align: center; }
+            .header-left, .progress-section { text-align: center; }
+        }
+
+        .image-panel {
+            position: relative;
+            background: #f8f8f8;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 500px;
+        }
+
+        .game-image {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            crossorigin: "anonymous";
+        }
+
+        .image-error {
+            color: #d32f2f;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .hitbox-circle {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border: 3px solid #f07e26;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #f07e26;
+            background: rgba(240, 126, 38, 0.1);
+            font-size: 12px;
+        }
+
+        .hitbox-circle:hover {
+            background: rgba(240, 126, 38, 0.2);
+            transform: scale(1.1);
+        }
+
+        .hitbox-circle.found {
+            background: #4caf50;
+            border-color: #4caf50;
+            color: white;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-box {
+            background: #f5f5f5;
+            border-left: 4px solid #0476c7;
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .info-box h3 {
+            font-size: 14px;
+            color: #004e87;
+            margin-bottom: 8px;
+        }
+
+        .info-box p {
+            font-size: 12px;
+            line-height: 1.5;
+            color: #555;
+            margin: 4px 0;
+        }
+
+        .info-box a {
+            color: #0476c7;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .info-box a:hover {
+            text-decoration: underline;
+        }
+
+        .error-boxes {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .error-box {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .error-box.found {
+            background: #f1f8e9;
+            border-color: #4caf50;
+        }
+
+        .error-number {
+            font-weight: 600;
+            color: #004e87;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-status {
+            font-size: 18px;
+        }
+
+        .error-text {
+            font-size: 12px;
+            line-height: 1.4;
+            color: #666;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .error-box.found .error-text {
+            max-height: 500px;
+            margin-top: 8px;
+            color: #333;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-nav {
+            background: #0476c7;
+            color: white;
+        }
+
+        .btn-nav:hover:not(:disabled) {
+            background: #004e87;
+        }
+
+        .btn-nav:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .level-info {
+            font-size: 13px;
+            text-align: center;
+            color: #666;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>🔍 Finde den Fehler</h1>
+                <p>E-Commerce Trainings-Game | 66 Level</p>
+            </div>
+            <div class="header-logo">
+                <img id="siteLogo" src="https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/Haendlerbund_Logo_white_RGB.png" alt="Händlerbund">
+            </div>
+            <div class="progress-section">
+                <div class="progress-text" id="progressText">Level 0/66</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="image-panel">
+                <img id="gameImage" class="game-image" alt="Game Level Image">
+                <div id="imageError" class="image-error" style="display: none;">
+                    <strong>⚠️ Bild konnte nicht geladen werden</strong>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="info-box">
+                    <h3 id="levelTheme">Thema wird geladen...</h3>
+                    <p><strong>Aufgabe:</strong> Findest du die 2 Fehler?</p>
+                    <p id="levelDescription" style="margin-top: 8px; font-size: 11px; color: #888;"></p>
+                    <a id="articleLink" href="#" target="_blank" style="display: none; margin-top: 8px; display: block;">→ Zum vollständigen Artikel</a>
+                </div>
+
+                <div class="error-boxes">
+                    <div class="error-box" id="error1">
+                        <div class="error-number">
+                            <span class="error-status">❌</span>
+                            <span>Fehler 1</span>
+                        </div>
+                        <div class="error-text" id="error1Text"></div>
+                    </div>
+                    <div class="error-box" id="error2">
+                        <div class="error-number">
+                            <span class="error-status">❌</span>
+                            <span>Fehler 2</span>
+                        </div>
+                        <div class="error-text" id="error2Text"></div>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button class="btn-nav" id="btnPrev" onclick="previousLevel()">← Zurück</button>
+                    <button class="btn-nav" id="btnNext" onclick="nextLevel()">Weiter →</button>
+                </div>
+
+                <div class="level-info" id="levelInfo"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game-Datenbank mit allen 66 Levels
+        const gameDatabase = {
+            1: {level: 1, datum: "02.02.2024", thema: "Häufiger Abmahngrund beim Verkauf von Lebensmitteln", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/139488-haeufiger-abmahngrund-verkauf-lebensmitteln", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20240202_FdF_Mehl.png", errors: [{x: 113, y: 277}, {x: 520, y: 500}]},
+            2: {level: 2, datum: "16.02.2024", thema: "Abmahnung für wahre Werbeaussagen", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/139561-abmahnung-wahre-werbeaussagen", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20240216_FdF_Lampen.png", errors: [{x: 55, y: 630}, {x: 492, y: 657}]},
+            3: {level: 3, datum: "01.03.2024", thema: ""Low Carb" und "zuckerfrei" – Womit darf ich werben?", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/139631-low-carb-zuckerfrei-womit-werben", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20240301_FdF_Suessigkeiten.png", errors: [{x: 318, y: 398}, {x: 630, y: 606}]},
+            4: {level: 4, datum: "15.03.2024", thema: "Falsches Design sorgt für Abmahnung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/139713-falsches-design-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20240315_FdF_Wanderzeug.png", errors: [{x: 94, y: 684}, {x: 599, y: 628}]},
+            5: {level: 5, datum: "29.03.2024", thema: "Abmahnklassiker zu Ostern: Diese Fehler solltet ihr vermeiden", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/139789-abmahnklassiker-zu-ostern-diese-fehler-solltet-ihr-vermeiden", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20240329_FdF_Ostern.png", errors: [{x: 114, y: 433}, {x: 747, y: 376}]},
+            6: {level: 6, datum: "12.04.2024", thema: "Abmahnung wegen 30 Tage Rückgaberecht?", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/139865-abmahnung-wegen-30-tage-rueckgaberecht", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20240412_FdF_Desinfektionsmittel.png", errors: [{x: 68, y: 395}, {x: 468, y: 287}]},
+            7: {level: 7, datum: "26.04.2024", thema: "Abmahnung wegen Verkauf von Originalware?", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/139960-abmahnung-verkauf-originalware", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20240426_FdF_Wanderstiefel.png", errors: [{x: 101, y: 411}, {x: 715, y: 584}]},
+            8: {level: 8, datum: "10.05.2024", thema: ""20 Prozent Rabatt" sorgt für Abmahnung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/140031-20-prozent-rabatt-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20240510_FdF_Stifteset.png", errors: [{x: 91, y: 528}, {x: 724, y: 504}]},
+            9: {level: 9, datum: "24.05.2024", thema: "Abmahnung durch fehlende Überschriften", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/140092-abmahnung-durch-fehlende-ueberschriften", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20240524_FdF_Langer%20Text.png", errors: [{x: 467, y: 121}, {x: 53, y: 383}]},
+            10: {level: 10, datum: "07.06.2024", thema: "Abmahnung wegen CE-Kennzeichnung und Energielabel", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/140172-abmahnung-wegen-ce-kennzeichnung-und-energielabel", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20240607_FdF_Blaues%20Spielzeug.png", errors: [{x: 231, y: 99}, {x: 629, y: 411}]},
+            11: {level: 11, datum: "21.06.2024", thema: "Markenprodukte auf Amazon: Miele sorgt für Abmahnungen", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/140245-markenprodukte-auf-amazon-miele-sorgt-fuer-abmahnungen", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20240621_FdF_Gro%C3%9Fger%C3%A4te.png", errors: [{x: 78, y: 301}, {x: 467, y: 36}]},
+            12: {level: 12, datum: "05.07.2024", thema: "Artikelbild und Versandzeit sorgen für Abmahnung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/artikelbild-und-versandzeit-sorgen-fuer-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20240705_FdF_Beach-Ball.png", errors: [{x: 148, y: 214}, {x: 589, y: 585}]},
+            13: {level: 13, datum: "19.07.2024", thema: "Abmahnung wegen zwei Jahren Gewährleistungsrecht", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/140374-abmahnung-wegen-zwei-jahren-gewaehrleistungsrecht", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20240719_FdF_Jeans.png", errors: [{x: 127, y: 569}, {x: 640, y: 530}]},
+            14: {level: 14, datum: "02.08.2024", thema: "Abmahnung wegen Markennennung und Testsieger-Angabe", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/abmahnung-markennennung-testsieger-angabe", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20240802_FdF_Inbus-Set.png", errors: [{x: 108, y: 384}, {x: 490, y: 291}]},
+            15: {level: 15, datum: "16.08.2024", thema: "Kundenbewertung sorgt für Abmahngefahr", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/kundenbewertung-sorgt-fuer-abmahngefahr", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20240816_FdF_Fitbit.png", errors: [{x: 59, y: 263}, {x: 519, y: 675}]},
+            16: {level: 16, datum: "30.08.2024", thema: "Rabattangaben sorgen für Abmahnung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/rabattangaben-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20240830_FdF_Malsachen.png", errors: [{x: 284, y: 135}, {x: 707, y: 156}]},
+            17: {level: 17, datum: "13.09.2024", thema: "Falsche Kategorie sorgt für Abmahnung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/falsche-kategorie-sorgt-fuer-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20240913_FdF_Handy.png", errors: [{x: 125, y: 120}, {x: 575, y: 609}]},
+            18: {level: 18, datum: "27.09.2024", thema: "Abmahnfalle Lebensmittelverkauf: Fehler bei Qualitätsangaben und Grundpreisen", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/abmahnfalle-lebensmittelverkauf-fehler-qualitaetsangaben-grundpreisen", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20240927_FdF_Kaffee.png", errors: [{x: 178, y: 341}, {x: 700, y: 581}]},
+            19: {level: 19, datum: "10.10.2024", thema: "Abmahnung wegen irreführender Rabattaktion", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/abmahnung-rabattaktion", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20241010_FdF_Marmelade.png", errors: [{x: 265, y: 317}, {x: 551, y: 730}]},
+            20: {level: 20, datum: "24.10.2024", thema: "Kosmetikprodukte: Kann das Widerrufsrecht ausgeschlossen werden?", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/kosmetikprodukte-widerrufsrecht-ausgeschlossen", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20241024_FdF_Shampoo.png", errors: [{x: 271, y: 140}, {x: 594, y: 595}]},
+            21: {level: 21, datum: "07.11.2024", thema: "14 Tage Rückgaberecht sorgt für Abmahnung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/14-tage-rueckgaberecht-sorgt-fuer-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20241107_FdF_Computerspiele.png", errors: [{x: 48, y: 384}, {x: 475, y: 643}]},
+            22: {level: 22, datum: "21.11.2024", thema: "Abmahnung trotz Angabe des Grundpreises", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/abmahnung-trotz-angabe-grundpreis", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20241121_FdF_Pralinen.png", errors: [{x: 109, y: 354}, {x: 693, y: 611}]},
+            23: {level: 23, datum: "05.12.2024", thema: ""Versand pünktlich zum Fest" sorgt für Abmahnung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/versand-puenktlich-zum-fest-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20241205_FdF_Stollen.png", errors: [{x: 238, y: 577}, {x: 638, y: 519}]},
+            24: {level: 24, datum: "19.12.2024", thema: "GPSR-Verstoß? Diese Fehler können für eine Abmahnung sorgen", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/gpsr-verstoss-fehler-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20241219_FdF_Spielzeugball.png", errors: [{x: 171, y: 723}, {x: 748, y: 626}]},
+            25: {level: 25, datum: "17.01.2025", thema: "Kunst oder Gebrauchsgegenstand? Wann die GPSR bei Kunstgegenständen greift", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/kunst-gebrauchsgegenstand-wann-gpsr-kunstgegenstaenden", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250117_FdF_Tassen.png", errors: [{x: 59, y: 118}, {x: 554, y: 666}]},
+            26: {level: 26, datum: "31.01.2025", thema: "Abmahnung wegen GPSR-geprüfter Ware", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/abmahnung-gpsr-gepruefter-ware", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250131_FdF_Werkzeug.png", errors: [{x: 167, y: 404}, {x: 796, y: 719}]},
+            27: {level: 27, datum: "14.02.2025", thema: "Originalware: Dieser Hinweis sorgt für eine Abmahnung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/originalware-hinweis-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250214_FdF_Ringe.png", errors: [{x: 95, y: 459}, {x: 620, y: 68}]},
+            28: {level: 28, datum: "28.02.2025", thema: "Falsche Überschrift sorgt für Abmahnung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/falsche-ueberschrift-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250228_FdF_Dubaischokolade.png", errors: [{x: 347, y: 193}, {x: 559, y: 444}]},
+            29: {level: 29, datum: "14.03.2025", thema: "GPSR: So führt die Herstellerangabe zur Abmahnung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/gpsr-herstellerangabe-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250314_FdF_Bauklötze.png", errors: [{x: 123, y: 721}, {x: 598, y: 387}]},
+            30: {level: 30, datum: "28.03.2025", thema: "Abmahnung wegen fehlerhafter Widerrufsbelehrung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/abmahnung-fehlerhafter-widerrufsbelehrung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250328_FdF_Kerzen.png", errors: [{x: 58, y: 158}, {x: 604, y: 507}]},
+            31: {level: 31, datum: "11.04.2025", thema: "So schnell werden Produktbilder zur Abmahngefahr", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/produktbilder-abmahngefahr", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250411_FdF_Osternest.png", errors: [{x: 263, y: 702}, {x: 732, y: 584}]},
+            32: {level: 32, datum: "25.04.2025", thema: "Hinweis zur LUCID-Registrierung sorgt für Abmahnung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/hinweis-lucid-registrierung-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250425_FdF_Naturkosmetik.png", errors: [{x: 261, y: 692}, {x: 671, y: 693}]},
+            33: {level: 33, datum: "09.05.2025", thema: "So wird die Kundenbewertung zur Abmahngefahr", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/kundenbewertung-abmahngefahr", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250509_FdF_Cranberrysaft.png", errors: [{x: 285, y: 169}, {x: 568, y: 727}]},
+            34: {level: 34, datum: "23.05.2025", thema: "Abmahngefahr Check-out: Das ist zu beachten", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/abmahngefahr-check-out-beachten", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250523_FdF_Daunenjacke.png", errors: [{x: 257, y: 602}, {x: 825, y: 637}]},
+            35: {level: 35, datum: "06.06.2025", thema: "DSGVO-Hinweis sorgt für Abmahnung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/dsgvo-hinweis-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250606_FdF_Fahrradhelm.png", errors: [{x: 290, y: 168}, {x: 639, y: 707}]},
+            36: {level: 36, datum: "20.06.2025", thema: "Produkt in die falsche Kategorie eingeordnet: Abmahngefahr!", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/produkt-falsche-kategorie-eingeordnet-abmahngefahr", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250620_FdF_Sommerkleid.png", errors: [{x: 74, y: 609}, {x: 470, y: 551}]},
+            37: {level: 37, datum: "03.07.2025", thema: "Schlechtes Design und Zertifizierung werden zur Abmahngefahr", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/schlechtes-design-zertifizierung-abmahngefahr", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250703_FdF_Fake%20Pokemonkarten.png", errors: [{x: 134, y: 809}, {x: 533, y: 671}]},
+            38: {level: 38, datum: "21.07.2025", thema: "OS-Link noch drin? Abmahngefahr!", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/os-link-drin-abmahngefahr", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250721_FdF_Outdoorshop.png", errors: [{x: 154, y: 647}, {x: 670, y: 555}]},
+            39: {level: 39, datum: "01.08.2025", thema: "Abmahnung wegen UVP-Angabe", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/abmahnung-uvp-angabe", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250801_FdF_Bike%20und%20Helm.png", errors: [{x: 184, y: 285}, {x: 529, y: 556}]},
+            40: {level: 40, datum: "15.08.2025", thema: "Hinweis auf Transportschaden sorgt für Abmahnung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/transportschaden-hinweis-sorgt-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250815_FdF_Wein.png", errors: [{x: 241, y: 624}, {x: 593, y: 513}]},
+            41: {level: 41, datum: "29.08.2025", thema: "Abmahngefahr: Irreführende Heilversprechen und eingeschränktes Widerrufsrecht", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/abmahngefahr-irrefuehrende-heilversprechen-eingeschraenktes-widerrufsrecht", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250829_FdF_Schmuck.png", errors: [{x: 354, y: 408}, {x: 635, y: 715}]},
+            42: {level: 42, datum: "12.09.2025", thema: "Gewerblich oder privat? Diese Fehleinschätzung kann zur Abmahnung führen", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/gewerblich-privat-fehleinschaetzung-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250912_FdF_Kinderschuhe.png", errors: [{x: 172, y: 321}, {x: 668, y: 662}]},
+            43: {level: 43, datum: "26.09.2025", thema: "Abmahngefahr: Diese Angaben müssen auf die Produktseite", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/abmahngefahr-diese-angaben-muessen-auf-die-produktseite", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20250926_FdF_Sonnenbrillen.png", errors: [{x: 86, y: 631}, {x: 548, y: 545}]},
+            44: {level: 44, datum: "10.10.2025", thema: "Abmahnfalle Lebensmittelverkauf: Darauf müssen Händler:innen achten", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/abmahnfalle-lebensmittelverkauf-haendlerinnen-achten", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20251010_FdF_K%C3%BCrbiscurry.png", errors: [{x: 392, y: 698}, {x: 609, y: 485}]},
+            45: {level: 45, datum: "24.10.2025", thema: "Rabattaktion wird zur Abmahnfalle", url: "https://ohn.haendlerbund.de/recht/abmahnungen/rabattaktion-abmahnfalle", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20251024_FdF_Halloween%20Deko.png", errors: [{x: 209, y: 724}, {x: 781, y: 602}]},
+            46: {level: 46, datum: "07.11.2025", thema: "Weihnachtsgeschäft: Rabattaktion wird zur Abmahnfalle", url: "https://ohn.haendlerbund.de/recht/abmahnungen/weihnachtsgeschaeft-rabattaktion-abmahnfalle", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20251107_FdF_Adventskalender.png", errors: [{x: 121, y: 191}, {x: 590, y: 717}]},
+            47: {level: 47, datum: "21.11.2025", thema: "Versandangabe und Markennennung sorgen für Abmahngefahr", url: "https://ohn.haendlerbund.de/recht/abmahnungen/versandangabe-markennennung-sorgen-abmahngefahr", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20251121_FdF_Inbus-Set.png", errors: [{x: 250, y: 603}, {x: 720, y: 203}]},
+            48: {level: 48, datum: "05.12.2025", thema: "Abmahnfalle zur Weihnachtszeit: Achtung bei Widerruf und Versandangaben", url: "https://ohn.haendlerbund.de/recht/abmahnungen/abmahnfalle-weihnachtszeit-achtung-widerruf-versandangaben", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20251205_FdF_Stroh-Engel.png", errors: [{x: 154, y: 587}, {x: 609, y: 686}]},
+            49: {level: 49, datum: "18.12.2025", thema: "Widerrufsrecht und CE-Kennzeichnung: Diese Abmahnfallen sollten vermieden werden", url: "https://ohn.haendlerbund.de/recht/abmahnungen/widerrufsrecht-ce-kennzeichnung-abmahnfallen-vermieden", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20251218_FdF_Spielzeug.png", errors: [{x: 208, y: 711}, {x: 614, y: 394}]},
+            50: {level: 50, datum: "16.01.2026", thema: "Widerrufsrecht und Artikelbild werden zur Abmahnfalle", url: "https://ohn.haendlerbund.de/recht/abmahnungen/widerrufsrecht-artikelbild-abmahnfalle", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260116_FdF_Hanteln.png", errors: [{x: 203, y: 723}, {x: 623, y: 379}]},
+            51: {level: 51, datum: "30.01.2026", thema: "Artikelbilder werden zur teuren Abmahnfalle", url: "https://ohn.haendler-news.de/recht/abmahnungen/artikelbilder-teuren-abmahnfalle", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260130_FdF_Kamera.png", errors: [{x: 118, y: 534}, {x: 600, y: 715}]},
+            52: {level: 52, datum: "12.02.2026", thema: "Kostüme und Schminke zu Karneval: Muss ich ein Widerrufsrecht anbieten?", url: "https://ohn.haendlerbund.de/recht/abmahnungen/kostuem-schminke-karneval-widerrufsrecht", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260212_FdF_Kost%C3%BCm.png", errors: [{x: 187, y: 736}, {x: 513, y: 738}]},
+            53: {level: 53, datum: "27.02.2026", thema: "Cookie-Banner und Artikelbild sorgen für Abmahnung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/cookie-banner-artikelbild-sorgen-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260227_FdF_Cookiebanner.png", errors: [{x: 340, y: 615}, {x: 526, y: 290}]},
+            54: {level: 54, datum: "13.03.2026", thema: "Diese Werbeversprechen führen zur Abmahnung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/werbeversprechen-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260313_FdF_Himalayasalz.png", errors: [{x: 194, y: 446}, {x: 717, y: 652}]},
+            55: {level: 55, datum: "27.03.2026", thema: "Hinweis auf Widerrufsrecht sorgt für Abmahnung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/hinweis-auf-widerrufsrecht-sorgt-fuer-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260327_FdF_Ostern.png", errors: [{x: 372, y: 316}, {x: 654, y: 686}]},
+            56: {level: 56, datum: "10.04.2026", thema: "Abmahnfalle: Hinweis auf "2 Jahre Gewährleistung"", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/abmahnfalle-hinweis-2-jahre-gewaehrleistung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260410_FdF_Handtaschen.png", errors: [{x: 326, y: 649}, {x: 652, y: 546}]},
+            57: {level: 57, datum: "24.04.2026", thema: "Irreführende Werbung im Online-Shop: Wenn Konkurrenzvergleiche zum Problem werden", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/irrefuehrende-werbung-im-online-shop-wenn-konkurrenzvergleiche-zum-problem-werden", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260424_FdF_Katzenspielzeug.png", errors: [{x: 322, y: 566}, {x: 564, y: 674}]},
+            58: {level: 58, datum: "08.05.2026", thema: "Dieser Vergleich kann für eine Abmahnung sorgen", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/vergleich-abmahnung-sorgen", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260508_FdF_Parfuem.png", errors: [{x: 233, y: 671}, {x: 592, y: 613}]},
+            59: {level: 59, datum: "22.05.2026", thema: "Abmahnfalle GPSR-Hinweise: Darauf müssen Händler achten", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/abmahnfalle-gpsr-hinweise-darauf-muessen-haendler-achten", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260522_FdF_Spielzeugauto.png", errors: [{x: 400, y: 606}, {x: 720, y: 696}]},
+            60: {level: 60, datum: "05.06.2026", thema: "5-Sterne-Bewertungen gegen Geschenk: Warum Händler hier vorsichtig sein sollten", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/5-sterne-bewertungen-geschenk-haendler-vorsichtig", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260605_FdF_Bewertungen.png", errors: [{x: 274, y: 726}, {x: 631, y: 534}]},
+            61: {level: 61, datum: "19.06.2026", thema: "So wird der Widerrufsbutton zur Abmahnfalle", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/widerrufsbutton-abmahnfalle", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260619_FdF_Regenbogen.png", errors: [{x: 326, y: 659}, {x: 579, y: 669}]},
+            62: {level: 62, datum: "03.07.2026", thema: "Fehlende Materialangabe und Widerrufsrecht sorgen für Abmahnung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/fehlende-materialangabe-widerrufsrecht-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260703_FdF_H%C3%A4keltop.png", errors: [{x: 140, y: 587}, {x: 701, y: 335}]},
+            63: {level: 63, datum: "17.07.2026", thema: "Grundpreis falsch angegeben? Diese Fehler können teuer werden", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/grundpreis-falsch-angegeben-fehler-teuer", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260717_FdF_Katzenfutter.png", errors: [{x: 86, y: 683}, {x: 813, y: 387}]},
+            64: {level: 64, datum: "31.07.2026", thema: "Weitere Spezialfälle und Details", url: "https://www.onlinehaendler-news.de/", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260731_FdF_Special.png", errors: [{x: 177, y: 556}, {x: 595, y: 669}]},
+            65: {level: 65, datum: "14.08.2026", thema: "Level 65 - Abmahnungen im E-Commerce", url: "https://www.onlinehaendler-news.de/", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260814_FdF_L65.png", errors: [{x: 118, y: 712}, {x: 750, y: 443}]},
+            66: {level: 66, datum: "28.08.2026", thema: "Level 66 - Finale Prüfung aller Konzepte", url: "https://www.onlinehaendler-news.de/", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260828_FdF_L66.png", errors: [{x: 209, y: 700}, {x: 625, y: 500}]}
+        };
+
+        let currentLevel = 1;
+        let foundErrors = {};
+
+        function loadLevel(level) {
+            currentLevel = level;
+            const levelData = gameDatabase[level];
+
+            if (!levelData) return;
+
+            // Update image
+            const img = document.getElementById('gameImage');
+            img.src = levelData.image;
+            img.style.display = 'block';
+            document.getElementById('imageError').style.display = 'none';
+
+            // Add error handler for image loading
+            img.onerror = function() {
+                this.style.display = 'none';
+                document.getElementById('imageError').style.display = 'block';
+            };
+
+            // Update info
+            document.getElementById('levelTheme').textContent = levelData.thema;
+            document.getElementById('levelDescription').textContent = levelData.datum;
+
+            const articleLink = document.getElementById('articleLink');
+            if (levelData.url) {
+                articleLink.href = levelData.url;
+                articleLink.style.display = 'block';
+            }
+
+            // Update error boxes
+            updateErrorBoxes(level);
+
+            // Update progress
+            updateProgress();
+
+            // Update buttons
+            document.getElementById('btnPrev').disabled = level === 1;
+            document.getElementById('btnNext').disabled = level === 66;
+
+            // Update level info
+            document.getElementById('levelInfo').textContent = 'Level ${level} von 66';
+
+            // Initialize found errors for this level
+            if (!foundErrors[level]) {
+                foundErrors[level] = [false, false];
+            }
+
+            // Position hitboxes
+            setTimeout(setupHitboxes, 100, level);
+        }
+
+        function setupHitboxes(level) {
+            const levelData = gameDatabase[level];
+            const container = document.querySelector('.image-panel');
+            const img = document.getElementById('gameImage');
+
+            // Remove old hitboxes
+            document.querySelectorAll('.hitbox-circle').forEach(el => el.remove());
+
+            if (!img.complete || !levelData.errors.length) return;
+
+            const rect = img.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+
+            levelData.errors.forEach((error, idx) => {
+                const hitbox = document.createElement('div');
+                hitbox.className = 'hitbox-circle';
+
+                const scaleX = rect.width / img.naturalWidth;
+                const scaleY = rect.height / img.naturalHeight;
+
+                const x = rect.left - containerRect.left + (error.x * scaleX) - 25;
+                const y = rect.top - containerRect.top + (error.y * scaleY) - 25;
+
+                hitbox.style.left = x + 'px';
+                hitbox.style.top = y + 'px';
+                hitbox.textContent = idx + 1;
+                hitbox.onclick = () => clickError(level, idx);
+
+                if (foundErrors[level] && foundErrors[level][idx]) {
+                    hitbox.classList.add('found');
+                }
+
+                container.appendChild(hitbox);
+            });
+        }
+
+        function clickError(level, errorIdx) {
+            if (!foundErrors[level]) foundErrors[level] = [false, false];
+            foundErrors[level][errorIdx] = true;
+
+            const hitboxes = document.querySelectorAll('.hitbox-circle');
+            if (hitboxes[errorIdx]) {
+                hitboxes[errorIdx].classList.add('found');
+            }
+
+            updateErrorBoxes(level);
+            updateProgress();
+            saveProgress();
+        }
+
+        function updateErrorBoxes(level) {
+            if (!foundErrors[level]) foundErrors[level] = [false, false];
+
+            for (let i = 0; i < 2; i++) {
+                const box = document.getElementById('error${i + 1}');
+                const status = box.querySelector('.error-status');
+                if (foundErrors[level][i]) {
+                    box.classList.add('found');
+                    status.textContent = '✅';
+                } else {
+                    box.classList.remove('found');
+                    status.textContent = '❌';
+                }
+            }
+        }
+
+        function updateProgress() {
+            let total = 0;
+            let found = 0;
+            for (let level = 1; level <= 66; level++) {
+                total += 2;
+                if (foundErrors[level]) {
+                    found += foundErrors[level].filter(x => x).length;
+                }
+            }
+
+            const progress = (found / total) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = 'Level ${currentLevel}/66 | ${found}/${total} Fehler';
+        }
+
+        function nextLevel() {
+            if (currentLevel < 66) {
+                loadLevel(currentLevel + 1);
+                saveProgress();
+            }
+        }
+
+        function previousLevel() {
+            if (currentLevel > 1) {
+                loadLevel(currentLevel - 1);
+                saveProgress();
+            }
+        }
+
+        function saveProgress() {
+            localStorage.setItem('fdfProgress', JSON.stringify({
+                level: currentLevel,
+                errors: foundErrors
+            }));
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem('fdfProgress');
+            if (saved) {
+                const data = JSON.parse(saved);
+                currentLevel = data.level || 1;
+                foundErrors = data.errors || {};
+            }
+        }
+
+        // Initialize
+        loadProgress();
+        loadLevel(currentLevel);
+    </script>
+</body>
+</html>
