@@ -457,7 +457,7 @@
             document.getElementById('btnNext').disabled = level === 66;
 
             // Update level info
-            document.getElementById('levelInfo').textContent = `Level ${level} von 66`;
+            document.getElementById('levelInfo').textContent = 'Level ${level} von 66';
 
             // Initialize found errors for this level
             if (!foundErrors[level]) {
@@ -522,7 +522,7 @@
             if (!foundErrors[level]) foundErrors[level] = [false, false];
 
             for (let i = 0; i < 2; i++) {
-                const box = document.getElementById(`error${i + 1}`);
+                const box = document.getElementById('error${i + 1}');
                 const status = box.querySelector('.error-status');
                 if (foundErrors[level][i]) {
                     box.classList.add('found');
@@ -546,7 +546,7 @@
 
             const progress = (found / total) * 100;
             document.getElementById('progressFill').style.width = progress + '%';
-            document.getElementById('progressText').textContent = `Level ${currentLevel}/66 | ${found}/${total} Fehler`;
+            document.getElementById('progressText').textContent = 'Level ${currentLevel}/66 | ${found}/${total} Fehler';
         }
 
         function nextLevel() {
