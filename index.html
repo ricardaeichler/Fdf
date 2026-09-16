@@ -536,10 +536,12 @@
         let offsetX = 0;
         let offsetY = 0;
 
-        glass.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                offsetX = e.clientX - glass.getBoundingClientRect().left;
-                offsetY = e.clientY - glass.getBoundingClientRect().top;
+       glass.addEventListener('mousedown', (e) => {
+       e.stopPropagation();
+       e.preventDefault();
+       isDragging = true;
+       offsetX = e.clientX - glass.getBoundingClientRect().left;
+       offsetY = e.clientY - glass.getBoundingClientRect().top;
         });
 
         document.addEventListener('mousemove', (e) => {
@@ -550,7 +552,9 @@
           }
         });
 
-        document.addEventListener('mouseup', () => {
+        document.addEventListener('mouseup', (e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
                 isDragging = false;
         });
         }        
