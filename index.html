@@ -479,7 +479,6 @@
 
             // Position hitboxes
             setTimeout(setupHitboxes, 100, level);
-            setTimeout(initMagnifyingGlass, 100);
         }
 
         function setupHitboxes(level) {
@@ -527,7 +526,7 @@
                 glass.style.display = 'none';
                 return;
         }
-
+          
         glass.style.display = 'block';
         glass.style.left = container.offsetWidth / 2 - 40 + 'px';
         glass.style.top = container.offsetHeight / 2 - 40 + 'px';
@@ -568,6 +567,7 @@
             updateProgress();
             saveProgress();
         }
+        setTimeout(initMagnifyingGlass, 100);  
 
         function updateErrorBoxes(level) {
             if (!foundErrors[level]) foundErrors[level] = [false, false];
