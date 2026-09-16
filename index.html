@@ -552,10 +552,10 @@ glass.addEventListener('mousedown', (e) => {
         }
        });
 
-document.addEventListener('mouseup', () => {
-  isDragging = false;
-  glass.style.cursor = 'grab';
-});       
+       glass.addEventListener('mouseup', () => {
+       isDragging = false;
+       glass.style.cursor = 'grab';
+       });       
        }
         function clickError(level, errorIdx) {
             if (!foundErrors[level]) foundErrors[level] = [false, false];
