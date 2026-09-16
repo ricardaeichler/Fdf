@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -543,27 +543,13 @@
           glass.style.cursor = 'grabbing';
         });
 
-        glass.addEventListener('mousemove', (e) => {
-            if (isDragging) {
+       glass.addEventListener('mousemove', (e) => {
+             if (isDragging) {
             const rect = container.getBoundingClientRect();
             glass.style.left = (e.clientX - rect.left - offsetX) + 'px';
             glass.style.top = (e.clientY - rect.top - offsetY) + 'px';
-    
-            const hitboxes = document.querySelectorAll('.hitbox-circle');
-            hitboxes.forEach((hitbox, idx) => {
-            const hRect = hitbox.getBoundingClientRect();
-              const gRect = glass.getBoundingClientRect();
-      
-          const gCenter = {x: gRect.left + gRect.width/2, y: gRect.top + gRect.height/2};
-          const hCenter = {x: hRect.left + hRect.width/2, y: hRect.top + hRect.height/2};
-          const dist = Math.sqrt(Math.pow(gCenter.x - hCenter.x, 2) + Math.pow(gCenter.y - hCenter.y, 2));
-      
-          if (dist < 60 && !foundErrors[currentLevel]?.[idx]) {
-            clickError(currentLevel, idx);
           }
-        });
-      }
-    });
+}); 
 
        document.addEventListener('mouseup', () => {
               isDragging = false;
