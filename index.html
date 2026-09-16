@@ -538,6 +538,8 @@
         let offsetY = 0;
 
 glass.addEventListener('mousedown', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
   isDragging = true;
   offsetX = e.clientX - glass.getBoundingClientRect().left;
   offsetY = e.clientY - glass.getBoundingClientRect().top;
@@ -552,7 +554,7 @@ glass.addEventListener('mousedown', (e) => {
         }
        });
 
-       glass.addEventListener('mouseup', () => {
+       document.addEventListener('mouseup', () => {
        isDragging = false;
        glass.style.cursor = 'grab';
        });       
