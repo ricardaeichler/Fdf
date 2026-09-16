@@ -545,6 +545,7 @@ glass.addEventListener('mousedown', (e) => {
 });
 
         glass.addEventListener('mousemove', (e) => {
+         e.preventDefault();
          if (isDragging) {
          const rect = container.getBoundingClientRect();
          glass.style.left = (e.clientX - rect.left - offsetX) + 'px';
