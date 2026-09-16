@@ -410,9 +410,9 @@
             61: {level: 61, datum: "19.06.2026", thema: "So wird der Widerrufsbutton zur Abmahnfalle", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/widerrufsbutton-abmahnfalle", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260619_FdF_Regenbogen.png", errors: [{x: 326, y: 659}, {x: 579, y: 669}]},
             62: {level: 62, datum: "03.07.2026", thema: "Fehlende Materialangabe und Widerrufsrecht sorgen für Abmahnung", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/fehlende-materialangabe-widerrufsrecht-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260703_FdF_H%C3%A4keltop.png", errors: [{x: 140, y: 587}, {x: 701, y: 335}]},
             63: {level: 63, datum: "17.07.2026", thema: "Grundpreis falsch angegeben? Diese Fehler können teuer werden", url: "https://www.onlinehaendler-news.de/recht/abmahnungen/grundpreis-falsch-angegeben-fehler-teuer", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260717_FdF_Katzenfutter.png", errors: [{x: 86, y: 683}, {x: 813, y: 387}]},
-            64: {level: 64, datum: "31.07.2026", thema: "Weitere Spezialfälle und Details", url: "https://www.onlinehaendler-news.de/", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260731_FdF_Special.png", errors: [{x: 177, y: 556}, {x: 595, y: 669}]},
-            65: {level: 65, datum: "14.08.2026", thema: "Level 65 - Abmahnungen im E-Commerce", url: "https://www.onlinehaendler-news.de/", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260814_FdF_L65.png", errors: [{x: 118, y: 712}, {x: 750, y: 443}]},
-            66: {level: 66, datum: "28.08.2026", thema: "Level 66 - Finale Prüfung aller Konzepte", url: "https://www.onlinehaendler-news.de/", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260828_FdF_L66.png", errors: [{x: 209, y: 700}, {x: 625, y: 500}]}
+            64: {level: 64, datum: "31.07.2026", thema: "30.000 Verkäufe, aber privat? Diese Fehler können Händler teuer zu stehen kommen", url: "https://ohn.haendlerbund.de/recht/abmahnungen/30000-verkaeufe-privat-fehler-haendler-teuer", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260724_FdF_Nachhaltigkeit.png", errors: [{x: 177, y: 556}, {x: 595, y: 669}]},
+            65: {level: 65, datum: "14.08.2026", thema: "Falsches Produktbild sorgt für Abmahnung", url: "https://ohn.haendlerbund.de/recht/abmahnungen/falsches-produktbild-sorgt-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260807_FdF_Öko.png", errors: [{x: 118, y: 712}, {x: 750, y: 443}]},
+            66: {level: 66, datum: "28.08.2026", thema: "Diese Versprechen sorgen für eine Abmahnung", url: "https://ohn.haendlerbund.de/recht/abmahnungen/versprechen-sorgen-abmahnung", image: "https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/20260821_FdF_Fair.png", errors: [{x: 209, y: 700}, {x: 625, y: 500}]}
         };
 
         let currentLevel = 1;
@@ -522,7 +522,7 @@
             if (!foundErrors[level]) foundErrors[level] = [false, false];
 
             for (let i = 0; i < 2; i++) {
-                const box = document.getElementById('error${i + 1}');
+                const box = document.getElementById(`error${i + 1}`);
                 const status = box.querySelector('.error-status');
                 if (foundErrors[level][i]) {
                     box.classList.add('found');
