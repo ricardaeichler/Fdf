@@ -503,8 +503,8 @@
                 const scaleX = rect.width / img.naturalWidth;
                 const scaleY = rect.height / img.naturalHeight;
 
-                const x = rect.left - containerRect.left + (error.x * scaleX) - 25;
-                const y = rect.top - containerRect.top + (error.y * scaleY) - 25;
+                const x = (error.x * scaleX) - 25;
+                const y = (error.y * scaleY) - 25;
 
                 hitbox.style.left = x + 'px';
                 hitbox.style.top = y + 'px';
