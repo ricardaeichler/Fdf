@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -159,6 +159,18 @@
             border-color: #4caf50;
             color: white;
         }
+        .magnifying-glass {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            cursor: grab;
+            z-index: 100;
+        user-select: none;
+        }
+
+        .magnifying-glass:active {
+            cursor: grabbing;
+        }
 
         .sidebar {
             display: flex;
@@ -303,6 +315,7 @@
 
         <div class="content">
             <div class="image-panel">
+                <img id="magnifyingGlass" src="https://raw.githubusercontent.com/ricardaeichler/Fdf/refs/heads/main/lupe.png" alt="Lupe" class="magnifying-glass" style="position: absolute; width: 80px; height: 80px; cursor: grab; z-index: 100; display: none;">
                 <img id="gameImage" class="game-image" alt="Game Level Image">
                 <div id="imageError" class="image-error" style="display: none;">
                     <strong>⚠️ Bild konnte nicht geladen werden</strong>
@@ -504,6 +517,43 @@
             });
         }
 
+        function initMagnifyingGlass() {
+                const glass = document.getElementById('magnifyingGlass');
+                const container = document.querySelector('.image-panel');
+                const img = document.getElementById('gameImage');
+
+        if (!img.src) {
+                glass.style.display = 'none';
+                return;
+        }
+
+        glass.style.display = 'block';
+        glass.style.left = container.offsetWidth / 2 - 40 + 'px';
+        glass.style.top = container.offsetHeight / 2 - 40 + 'px';
+
+        let isDragging = false;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        glass.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                offsetX = e.clientX - glass.getBoundingClientRect().left;
+                offsetY = e.clientY - glass.getBoundingClientRect().top;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                const rect = container.getBoundingClientRect();
+                glass.style.left = (e.clientX - rect.left - offsetX) + 'px';
+                glass.style.top = (e.clientY - rect.top - offsetY) + 'px';
+          }
+        });
+
+        document.addEventListener('mouseup', () => {
+                isDragging = false;
+        });
+        }        
+
         function clickError(level, errorIdx) {
             if (!foundErrors[level]) foundErrors[level] = [false, false];
             foundErrors[level][errorIdx] = true;
@@ -546,7 +596,7 @@
 
             const progress = (found / total) * 100;
             document.getElementById('progressFill').style.width = progress + '%';
-            document.getElementById('progressText').textContent = 'Level ${currentLevel}/66 | ${found}/${total} Fehler';
+            document.getElementById('progressText').textContent = `Level ${currentLevel}/66 | ${found}/${total} Fehler`;
         }
 
         function nextLevel() {
