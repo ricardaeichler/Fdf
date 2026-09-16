@@ -536,26 +536,25 @@
         let offsetX = 0;
         let offsetY = 0;
 
-        glass.addEventListener('mousedown', (e) => {
-          isDragging = true;
-          offsetX = e.clientX - glass.getBoundingClientRect().left;
-          offsetY = e.clientY - glass.getBoundingClientRect().top;
-          glass.style.cursor = 'grabbing';
-        });
+glass.addEventListener('mousedown', (e) => {
+  isDragging = true;
+  offsetX = e.clientX - glass.getBoundingClientRect().left;
+  offsetY = e.clientY - glass.getBoundingClientRect().top;
+  glass.style.cursor = 'grabbing';
+});
 
-      glass.addEventListener('mousemove', (e) => {
-       if (isDragging) {
-       const rect = container.getBoundingClientRect();
-       glass.style.left = (e.clientX - rect.left - offsetX) + 'px';
-       glass.style.top = (e.clientY - rect.top - offsetY) + 'px';
-       }
-      });
+        glass.addEventListener('mousemove', (e) => {
+         if (isDragging) {
+         const rect = container.getBoundingClientRect();
+         glass.style.left = (e.clientX - rect.left - offsetX) + 'px';
+         glass.style.top = (e.clientY - rect.top - offsetY) + 'px';
+        }
+       });
 
-       glass.addEventListener('mouseup', () => {
-              isDragging = false;
-              glass.style.cursor = 'grab';
-        });
-        }        
+document.addEventListener('mouseup', () => {
+  isDragging = false;
+  glass.style.cursor = 'grab';
+});       
 
         function clickError(level, errorIdx) {
             if (!foundErrors[level]) foundErrors[level] = [false, false];
