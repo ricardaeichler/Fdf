@@ -470,7 +470,7 @@
             document.getElementById('btnNext').disabled = level === 66;
 
             // Update level info
-            document.getElementById('levelInfo').textContent = 'Level ${level} von 66';
+            document.getElementById('levelInfo').textContent = `Level ${level} von 66`;
 
             // Initialize found errors for this level
             if (!foundErrors[level]) {
@@ -479,6 +479,7 @@
 
             // Position hitboxes
             setTimeout(setupHitboxes, 100, level);
+            setTimeout(initMagnifyingGlass, 100);
         }
 
         function setupHitboxes(level) {
