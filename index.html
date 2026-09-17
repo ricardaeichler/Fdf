@@ -537,50 +537,38 @@
         let offsetX = 0;
         let offsetY = 0;
 
-glass.addEventListener('mousedown', (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  isDragging = true;
-  offsetX = e.clientX - glass.getBoundingClientRect().left;
-  offsetY = e.clientY - glass.getBoundingClientRect().top;
-  glass.style.cursor = 'grabbing';
-});
-
-        glass.addEventListener('mousemove', (e) => {
+                 glass.addEventListener('mousemove', (e) => {
          if (isDragging) {
          const rect = container.getBoundingClientRect();
          glass.style.left = (e.clientX - rect.left - offsetX) + 'px';
          glass.style.top = (e.clientY - rect.top - offsetY) + 'px';
-         detectHitboxCollision(); 
+         detectHitboxCollision();
         }
        });
 
-       document.addEventListener('mouseup', () => {
-       isDragging = false;
-       glass.style.cursor = 'grab';
-       });       
-       }
-function detectHitboxCollision() {
-    const glass = document.getElementById('magnifyingGlass');
-    const glassRect = glass.getBoundingClientRect();
-    const hitboxes = document.querySelectorAll('.hitbox-circle');
-    
-    hitboxes.forEach((hitbox, idx) => {
-        const hitboxRect = hitbox.getBoundingClientRect();
-        
-        // Prüfe ob Lupe und Hitbox sich überlappen
-        const overlaps = !(glassRect.right < hitboxRect.left || 
-                          glassRect.left > hitboxRect.right || 
-                          glassRect.bottom < hitboxRect.top || 
-                          glassRect.top > hitboxRect.bottom);
-        
-        if (overlaps && !hitbox.classList.contains('found')) {
-            // Lupe ist über der Hitbox - automatisch auslösen!
-            const currentLevel = parseInt(document.getElementById('levelInfo').textContent.match(/\d+/)[0]);
-            clickError(currentLevel, idx);
+        function detectHitboxCollision() {
+            const glass = document.getElementById('magnifyingGlass');
+            const glassRect = glass.getBoundingClientRect();
+            const hitboxes = document.querySelectorAll('.hitbox-circle');
+            
+            hitboxes.forEach((hitbox, idx) => {
+                const hitboxRect = hitbox.getBoundingClientRect();
+                
+                // Prüfe ob Lupe und Hitbox sich überlappen
+                const overlaps = !(glassRect.right < hitboxRect.left || 
+                                  glassRect.left > hitboxRect.right || 
+                                  glassRect.bottom < hitboxRect.top || 
+                                  glassRect.top > hitboxRect.bottom);
+                
+                if (overlaps && !hitbox.classList.contains('found')) {
+                    // Lupe ist über der Hitbox - automatisch auslösen!
+                    const currentLevel = parseInt(document.getElementById('levelInfo').textContent.match(/\d+/)[0]);
+                    clickError(currentLevel, idx);
+                }
+            });
         }
-    });
-}
+        }
+
      
         function clickError(level, errorIdx) {
             if (!foundErrors[level]) foundErrors[level] = [false, false];
